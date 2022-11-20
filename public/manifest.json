@@ -1,0 +1,8 @@
+{
+  "manifest_version": 3,
+  "name": "Move Highlighter",
+  "version": "0.0.1",
+  "description": "Highlight common moves in the Lichess engine analysis",
+  "content_scripts": [{ "js": ["content.js"], "matches": ["https://lichess.org/*"] }],
+  "action": {}
+}
