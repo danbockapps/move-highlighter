@@ -1,11 +1,24 @@
-const box: HTMLElement | null = document.querySelector('.pv_box')
+const analyseTools = document.querySelector('.analyse__tools')
 
-if (box) {
-  const observer = new MutationObserver((mutations, observer) =>
-    console.log({ mutations, observer }),
-  )
-  observer.observe(box, { subtree: true, attributes: true })
-  box.style.backgroundColor = 'yellow'
+if (analyseTools) {
+  const aObserver = new MutationObserver(() => {
+    if (analyseTools.querySelector('.pv_box')) initializeBoxObserver()
+  })
+  aObserver.observe(analyseTools, { childList: true })
 }
 
-console.log('box', box)
+const initializeBoxObserver = () => {
+  if (analyseTools) {
+    // Always true
+    const box: HTMLElement | null = analyseTools.querySelector('.pv_box')
+
+    if (box) {
+      // Always true
+      const bObserver = new MutationObserver(() => {
+        console.log('observer triggered')
+        console.log(box.querySelector('.pv-san'))
+      })
+      bObserver.observe(box, { subtree: true, characterData: true, childList: true })
+    }
+  }
+}
