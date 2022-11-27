@@ -1,18 +1,20 @@
 import getBox from './getBox'
-const highlight = () => {
-  const pvs = getBox()?.getElementsByClassName('pv')
-  for (let i = 0; i < (pvs?.length || 0); i++) {
-    const sans = pvs?.item(i)?.getElementsByClassName('pv-san')
 
+const highlight = () => {
+  const pvs = Array.from(getBox()?.getElementsByClassName('pv') || [])
+
+  const allEvens = pvs.reduce<HTMLElement[]>((acc, cur) => {
+    const sans = cur.getElementsByClassName('pv-san')
     const evens = Array.from(sans || []).reduce<HTMLElement[]>(
       (acc, cur, j) => [...acc, ...(j % 2 === 0 ? [cur as HTMLElement] : [])],
       [],
     )
+    return [...acc, ...evens]
+  }, [])
 
-    evens.forEach(e => {
-      e.style.backgroundColor = 'pink'
-    })
-  }
+  allEvens.forEach(e => {
+    e.style.backgroundColor = 'salmon'
+  })
 }
 
 export default highlight
