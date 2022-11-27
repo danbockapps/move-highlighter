@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
     "strict": true,
-    "module": "commonjs",
+    "module": "ES2020",
     "target": "es6",
     "esModuleInterop": true,
     "sourceMap": true,
     "rootDir": "src",
     "outDir": "dist/js",
     "noEmitOnError": true,
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": ["node_modules/@types"],
+    "isolatedModules": true
   }
 }

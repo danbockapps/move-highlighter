@@ -1,24 +1,28 @@
-const analyseTools = document.querySelector('.analyse__tools')
+import getBox from './getBox'
+import highlight from './highlight'
 
-if (analyseTools) {
-  const aObserver = new MutationObserver(() => {
-    if (analyseTools.querySelector('.pv_box')) initializeBoxObserver()
-  })
-  aObserver.observe(analyseTools, { childList: true })
-}
+const aObserver = new MutationObserver(() => {
+  if (getBox()) initializeBoxObserver()
+  else bObserver.disconnect()
+})
+
+const bObserver = new MutationObserver(highlight)
+
+const analyseTools = document.querySelector('.analyse__tools')
 
 const initializeBoxObserver = () => {
   if (analyseTools) {
     // Always true
-    const box: HTMLElement | null = analyseTools.querySelector('.pv_box')
+    const box = getBox()
 
     if (box) {
-      // Always true
-      const bObserver = new MutationObserver(() => {
-        console.log('observer triggered')
-        console.log(box.querySelector('.pv-san'))
-      })
+      highlight()
       bObserver.observe(box, { subtree: true, characterData: true, childList: true })
     }
   }
 }
+
+if (analyseTools) {
+  aObserver.observe(analyseTools, { childList: true })
+  if (getBox()) initializeBoxObserver()
+} else aObserver.disconnect()
