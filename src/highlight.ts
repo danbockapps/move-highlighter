@@ -16,7 +16,7 @@ const highlight = () => {
     allEvens
       .map(e => e.innerHTML.replace('+', ''))
       .reduce<{ [san: string]: number }>(
-        (acc, cur) => (acc[cur] ? { ...acc, [cur]: acc[cur] + 1 } : { ...acc, [cur]: 1 }),
+        (acc, cur) => ({ ...acc, [cur]: acc[cur] ? acc[cur] + 1 : 1 }),
         {},
       ),
   ).sort((a, b) => b[1] - a[1])
