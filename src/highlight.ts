@@ -1,6 +1,14 @@
+import { moveColors, resetMoveColors } from './content'
 import getBox from './getBox'
 
+let toMove: string | undefined
+
 const highlight = () => {
+  const box = getBox()
+  const newToMove = box?.getAttribute('data-fen')?.split(' ')[1]
+  if (toMove !== newToMove) resetMove()
+  toMove = newToMove
+
   const allEvens = Array.from(getBox()?.getElementsByClassName('pv') || []).reduce<HTMLElement[]>(
     (acc, cur) => [
       ...acc,
@@ -23,12 +31,19 @@ const highlight = () => {
 
   allEvens.forEach(e => {
     const san = e.innerHTML.replace('+', '')
-
-    if (san === standings[0][0]) e.style.backgroundColor = '#0f0'
-    else if (san === standings[1][0]) e.style.backgroundColor = '#ff0'
-    else if (san === standings[2][0]) e.style.backgroundColor = '#0ff'
-    else if (san === standings[3][0]) e.style.backgroundColor = '#f0f'
+    if ([standings[0][0], standings[1][0], standings[2][0], standings[3][0]].includes(san)) {
+      if (moveColors[san]) e.style.backgroundColor = moveColors[san]
+      else moveColors[san] = colors[colorIndex++] || 'black'
+    }
   })
+}
+
+let colorIndex = 0
+const colors = ['#0f0', '#ff0', '#0ff', '#f0f', '#fc0', '#c9f']
+
+const resetMove = () => {
+  colorIndex = 0
+  resetMoveColors()
 }
 
 export default highlight

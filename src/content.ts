@@ -8,9 +8,19 @@ const aObserver = new MutationObserver(() => {
 
 const bObserver = new MutationObserver(highlight)
 
+interface MoveColors {
+  [move: string]: string
+}
+
+export let moveColors: MoveColors = {}
+export const resetMoveColors = () => {
+  moveColors = {}
+}
+
 const analyseTools = document.querySelector('.analyse__tools')
 
 const initializeBoxObserver = () => {
+  moveColors = {}
   if (analyseTools) {
     // Always true
     const box = getBox()
