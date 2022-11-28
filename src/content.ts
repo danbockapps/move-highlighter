@@ -1,5 +1,6 @@
 import getBox from './getBox'
 import highlight from './highlight'
+import { resetMove } from './state'
 
 const aObserver = new MutationObserver(() => {
   if (getBox()) initializeBoxObserver()
@@ -8,19 +9,10 @@ const aObserver = new MutationObserver(() => {
 
 const bObserver = new MutationObserver(highlight)
 
-interface MoveColors {
-  [move: string]: string
-}
-
-export let moveColors: MoveColors = {}
-export const resetMoveColors = () => {
-  moveColors = {}
-}
-
 const analyseTools = document.querySelector('.analyse__tools')
 
 const initializeBoxObserver = () => {
-  moveColors = {}
+  // resetMove('w') // TODO
   if (analyseTools) {
     // Always true
     const box = getBox()
