@@ -1,5 +1,5 @@
 import getBox from './getBox'
-import { assignNextMoveColor, moveColors, resetMove, toMove } from './state'
+import { assignMoveColors, resetMove, toMove } from './state'
 
 const highlight = () => {
   const box = getBox()
@@ -26,13 +26,7 @@ const highlight = () => {
       ),
   ).sort((a, b) => b[1] - a[1])
 
-  allEvens.forEach(e => {
-    const san = e.innerHTML.replace('+', '')
-    if ([standings[0][0], standings[1][0], standings[2][0], standings[3][0]].includes(san)) {
-      if (!moveColors[san]) assignNextMoveColor(san)
-      e.style.backgroundColor = moveColors[san]
-    }
-  })
+  assignMoveColors(allEvens, standings)
 }
 
 export default highlight
