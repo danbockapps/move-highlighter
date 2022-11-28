@@ -1,6 +1,6 @@
 import ranksHighly from './ranksHighly'
-let toMove: 'w' | 'b' | undefined
 
+let toMove: 'w' | 'b' | undefined
 const colors = ['#0f0', '#ff0', '#0ff', '#f0f', '#fc0', '#c9f']
 
 interface MoveColors {
