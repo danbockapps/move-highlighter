@@ -1,7 +1,6 @@
 import ranksHighly from './ranksHighly'
 
 let toMove: 'w' | 'b' | undefined
-const colors = ['#0f0', '#ff0', '#0ff', '#f0f', '#fc0', '#c9f']
 
 interface MoveColors {
   [move: string]: string | null
@@ -9,7 +8,16 @@ interface MoveColors {
 
 let moveColors: MoveColors = {}
 
-const assignMoveColors = (moveElements: HTMLElement[], standings: [string, number][]) => {
+const assignMoveColors = (moveElements: HTMLElement[], colors: string[]) => {
+  const standings = Object.entries(
+    moveElements
+      .map(e => e.innerHTML.replace('+', ''))
+      .reduce<{ [san: string]: number }>(
+        (acc, cur) => ({ ...acc, [cur]: acc[cur] ? acc[cur] + 1 : 1 }),
+        {},
+      ),
+  ).sort((a, b) => b[1] - a[1])
+
   // First, remove from moveColors any move that shouldn't be there anymore
   Object.keys(moveColors).forEach(san => {
     if (!ranksHighly(san, standings)) {

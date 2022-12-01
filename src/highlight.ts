@@ -1,32 +1,41 @@
 import getBox from './getBox'
 import { assignMoveColors, resetMove, toMove } from './state'
 
+interface AllMoves {
+  evens: HTMLElement[]
+  odds: HTMLElement[]
+}
+
+const emptyAllMoves = { evens: [], odds: [] }
+const evenColors = ['#0f0', '#ff0', '#0ff']
+const oddColors = ['red', 'blue', 'purple']
+
 const highlight = () => {
   const box = getBox()
   const newToMove = box?.getAttribute('data-fen')?.split(' ')[1] as 'w' | 'b'
   if (newToMove && ['w', 'b'].includes(newToMove) && toMove !== newToMove) resetMove(newToMove)
 
-  const allEvens = Array.from(getBox()?.getElementsByClassName('pv') || []).reduce<HTMLElement[]>(
-    (acc, cur) => [
-      ...acc,
-      ...Array.from(cur.getElementsByClassName('pv-san') || []).reduce<HTMLElement[]>(
-        (acc, cur, j) => [...acc, ...(j % 2 === 0 ? [cur as HTMLElement] : [])],
-        [],
-      ),
-    ],
-    [],
+  const allMoves = Array.from(getBox()?.getElementsByClassName('pv') || []).reduce<AllMoves>(
+    (acc, cur) => {
+      const currentRow = Array.from(cur.getElementsByClassName('pv-san') || []).reduce<AllMoves>(
+        (acc, cur, j) => ({
+          ...acc,
+          ...(j % 2 === 0
+            ? { evens: [...acc.evens, cur as HTMLElement] }
+            : { odds: [...acc.odds, cur as HTMLElement] }),
+        }),
+        emptyAllMoves,
+      )
+      return {
+        evens: [...acc.evens, ...currentRow.evens],
+        odds: [...acc.odds, ...currentRow.odds],
+      }
+    },
+    emptyAllMoves,
   )
 
-  const standings = Object.entries(
-    allEvens
-      .map(e => e.innerHTML.replace('+', ''))
-      .reduce<{ [san: string]: number }>(
-        (acc, cur) => ({ ...acc, [cur]: acc[cur] ? acc[cur] + 1 : 1 }),
-        {},
-      ),
-  ).sort((a, b) => b[1] - a[1])
-
-  assignMoveColors(allEvens, standings)
+  assignMoveColors(allMoves.evens, evenColors)
+  assignMoveColors(allMoves.odds, oddColors)
 }
 
 export default highlight

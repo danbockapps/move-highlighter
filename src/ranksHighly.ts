@@ -1,5 +1,5 @@
 // Number of moves that rank highly and should be highlighted
-const N = 4
+const N = 3
 
 const ranksHighly = (san: string, standings: [string, number][]): boolean =>
   standings
