@@ -8,7 +8,7 @@ interface AllMoves {
 
 const emptyAllMoves = { evens: [], odds: [] }
 const evenColors = ['#0f0', '#ff0', '#0ff']
-const oddColors = ['red', 'blue', 'purple']
+const oddColors = ['red', 'blue', '#012e02']
 
 const highlight = () => {
   const box = getBox()
@@ -34,8 +34,8 @@ const highlight = () => {
     emptyAllMoves,
   )
 
-  assignMoveColors(allMoves.evens, evenColors)
-  assignMoveColors(allMoves.odds, oddColors)
+  assignMoveColors(allMoves.evens, evenColors, 'color')
+  assignMoveColors(allMoves.odds, oddColors, 'shadow')
 }
 
 export default highlight
