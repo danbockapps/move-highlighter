@@ -8,11 +8,9 @@ interface MoveColors {
 
 let moveColors: MoveColors = {}
 
-const assignMoveColors = (
-  moveElements: HTMLElement[],
-  colors: string[],
-  style: 'color' | 'shadow',
-) => {
+const colors = ['#0f0', '#ff0', '#0ff', '#f0f']
+
+const assignMoveColors = (moveElements: HTMLElement[], style: 'color' | 'shadow') => {
   const standings = Object.entries(
     moveElements
       .map(e => e.innerHTML.replace('+', ''))
@@ -44,12 +42,14 @@ const assignMoveColors = (
 
     if (style === 'color') {
       e.style.backgroundColor = moveColors[san] || 'initial'
-      e.style.color = moveColors[san] ? 'black' : 'inherit'
     }
 
     if (style === 'shadow') {
-      e.style.boxShadow = `inset 0 4px 6px -4px ${moveColors[san]}, inset 0 -4px 6px -4px ${moveColors[san]}`
+      e.style.backgroundColor = 'white'
+      e.style.boxShadow = `inset 0 0 0 3px ${moveColors[san]}`
     }
+
+    e.style.color = moveColors[san] ? 'black' : 'inherit'
   })
 }
 

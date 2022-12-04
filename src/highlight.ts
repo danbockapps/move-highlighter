@@ -34,8 +34,8 @@ const highlight = () => {
     emptyAllMoves,
   )
 
-  assignMoveColors(allMoves.evens, evenColors, 'color')
-  assignMoveColors(allMoves.odds, oddColors, 'shadow')
+  assignMoveColors(allMoves.evens, 'color')
+  assignMoveColors(allMoves.odds, 'shadow')
 }
 
 export default highlight
