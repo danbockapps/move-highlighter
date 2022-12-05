@@ -3,14 +3,24 @@ import ranksHighly from './ranksHighly'
 let toMove: 'w' | 'b' | undefined
 
 interface MoveColors {
-  [move: string]: string | null
+  evens: {
+    [move: string]: string | null
+  }
+  odds: {
+    [move: string]: string | null
+  }
 }
 
-let moveColors: MoveColors = {}
+const createDefaultMoveColors = () => ({ evens: {}, odds: {} })
+let moveColors: MoveColors = createDefaultMoveColors()
 
 const colors = ['#0f0', '#ff0', '#0ff', '#f0f']
 
-const assignMoveColors = (moveElements: HTMLElement[], style: 'color' | 'shadow') => {
+const assignMoveColors = (
+  moveElements: HTMLElement[],
+  set: 'evens' | 'odds',
+  style: 'color' | 'shadow',
+) => {
   const standings = Object.entries(
     moveElements
       .map(e => e.innerHTML.replace('+', ''))
@@ -21,9 +31,9 @@ const assignMoveColors = (moveElements: HTMLElement[], style: 'color' | 'shadow'
   ).sort((a, b) => b[1] - a[1])
 
   // First, remove from moveColors any move that shouldn't be there anymore
-  Object.keys(moveColors).forEach(san => {
+  Object.keys(moveColors[set]).forEach(san => {
     if (!ranksHighly(san, standings)) {
-      delete moveColors[san]
+      delete moveColors[set][san]
     }
   })
 
@@ -31,30 +41,32 @@ const assignMoveColors = (moveElements: HTMLElement[], style: 'color' | 'shadow'
   moveElements.forEach(e => {
     const san = e.innerHTML.replace('+', '')
 
-    if (ranksHighly(san, standings) && !moveColors[san]) {
+    if (ranksHighly(san, standings) && !moveColors[set][san]) {
       // Move needs to be added to moveColors.
       const color = colors.reduce<string | undefined>(
-        (acc, cur) => acc || (Object.values(moveColors).includes(cur) ? undefined : cur),
+        (acc, cur) => acc || (Object.values(moveColors[set]).includes(cur) ? undefined : cur),
         undefined,
       )
-      if (color) moveColors[san] = color
+      if (color) moveColors[set][san] = color
     }
 
     if (style === 'color') {
-      e.style.backgroundColor = moveColors[san] || 'initial'
+      e.style.backgroundColor = moveColors[set][san] || 'initial'
     }
 
     if (style === 'shadow') {
       e.style.backgroundColor = 'white'
-      e.style.boxShadow = `inset 0 0 0 3px ${moveColors[san]}`
+      e.style.boxShadow = `inset 0 0 0 3px ${moveColors[set][san]}`
     }
 
-    e.style.color = moveColors[san] ? 'black' : 'inherit'
+    e.style.color = moveColors[set][san] ? 'black' : 'inherit'
   })
+
+  console.log('moveColors', set, moveColors)
 }
 
 const resetMove = (newToMove: 'w' | 'b') => {
-  moveColors = {}
+  moveColors = createDefaultMoveColors()
   toMove = newToMove
 }
 
