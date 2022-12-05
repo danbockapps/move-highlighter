@@ -16,11 +16,7 @@ let moveColors: MoveColors = createDefaultMoveColors()
 
 const colors = ['#0f0', '#ff0', '#0ff', '#f0f']
 
-const assignMoveColors = (
-  moveElements: HTMLElement[],
-  set: 'evens' | 'odds',
-  style: 'color' | 'shadow',
-) => {
+const assignMoveColors = (moveElements: HTMLElement[], set: 'evens' | 'odds') => {
   const standings = Object.entries(
     moveElements
       .map(e => e.innerHTML.replace('+', ''))
@@ -50,11 +46,11 @@ const assignMoveColors = (
       if (color) moveColors[set][san] = color
     }
 
-    if (style === 'color') {
+    if (set === 'evens') {
       e.style.backgroundColor = moveColors[set][san] || 'initial'
     }
 
-    if (style === 'shadow') {
+    if (set === 'odds') {
       e.style.backgroundColor = 'white'
       e.style.boxShadow = `inset 0 0 0 3px ${moveColors[set][san]}`
     }
