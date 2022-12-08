@@ -46,16 +46,25 @@ const assignMoveColors = (moveElements: HTMLElement[], set: 'evens' | 'odds') =>
       if (color) moveColors[set][san] = color
     }
 
-    if (set === 'evens') {
-      e.style.backgroundColor = moveColors[set][san] || 'initial'
-    }
+    // Create a const so TypeScript knows it exists when the conditional is true
+    const currentColor = moveColors[set][san]
 
-    if (set === 'odds') {
-      e.style.backgroundColor = 'white'
-      e.style.boxShadow = `inset 0 0 0 3px ${moveColors[set][san]}`
-    }
+    if (currentColor) {
+      if (set === 'evens') {
+        e.style.backgroundColor = currentColor
+      }
 
-    e.style.color = moveColors[set][san] ? 'black' : 'inherit'
+      if (set === 'odds') {
+        e.style.backgroundColor = 'white'
+        e.style.boxShadow = `inset 0 0 0 3px ${currentColor}`
+      }
+
+      e.style.color = 'black'
+    } else {
+      e.style.backgroundColor = 'inherit'
+      e.style.boxShadow = 'inherit'
+      e.style.color = 'inherit'
+    }
   })
 
   console.log('moveColors', set, moveColors)
