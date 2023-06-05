@@ -9,6 +9,7 @@ const aObserver = new MutationObserver(() => {
 const bObserver = new MutationObserver(highlight)
 
 const analyse = document.querySelector('.analyse')
+const analyseTools = document.querySelector('.analyse__tools')
 
 const initializeBoxObserver = () => {
   if (analyse) {
@@ -22,6 +23,10 @@ const initializeBoxObserver = () => {
   }
 }
 
+if (analyseTools) {
+  aObserver.observe(analyseTools, { childList: true })
+  if (getBox()) initializeBoxObserver()
+}
 if (analyse) {
   aObserver.observe(analyse, { childList: true })
   if (getBox()) initializeBoxObserver()
