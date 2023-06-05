@@ -59,6 +59,7 @@ const assignMoveColors = (moveElements: HTMLElement[], set: 'evens' | 'odds') =>
         e.style.boxShadow = `inset 0 0 0 3px ${currentColor}`
       }
 
+      e.style.borderRadius = '3px'
       e.style.color = 'black'
     } else {
       e.style.backgroundColor = 'inherit'
